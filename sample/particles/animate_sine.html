@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            font-family: helvetica, sans-serif;
+        }
+        .stage {
+            width: 400px;
+            height: 400px;
+            margin: 2em;
+            float: left;
+            position: relative;
+            background: #ccc;
+            /*overflow: hidden;*/
+            top: 200px;
+            left: 200px;
+        }
+        .stage p {
+            padding: 5em;
+        }
+    </style>
+</head>
+<body>
+  <section class="stage"></section>
+<script>
+class Plot {
+    constructor(stage) {
+        this.stage = stage;
+        // console.log(this.stage.offsetWidth);
+        this.elm = document.createElement('div');
+        this.elm.style.position = 'absolute';
+        this.stage.appendChild(this.elm);
+    }
+    setDimensions(x, y){
+        this.elm.style.width = x + 'px';
+        this.elm.style.height = y + 'px';
+        this.width = x;
+        this.height =y;
+    }
+    position(x, y) {
+        let xoffset = arguments[2] ? 0 : this.width / 2;
+        let yoffset = arguments[2] ? 0 : this.height / 2;
+        this.elm.style.left = (x-xoffset) + 'px';
+        this.elm.style.top = (y-yoffset) + 'px';
+        this.x = x;
+        this.y = y;
+    }
+    setBackground(color) {
+        this.elm.style.background = color;        
+    }
+    kill() {
+        this.stage.removeChild(this.elm);
+    }
+    rotate(str) {
+        this.elm.style.webkitTransform = this.elm.style.transform = 'rotate(' + str + ')';
+    }
+    content(content) {
+        this.elm.innerHTML = content;
+    }
+    round(round) {
+        this.elm.style.borderRadius = round ? '50%/50%' : '';
+    }
+}
+
+// distributing elements on a circle with corect angle
+let stage = document.querySelector('.stage'),
+    message = 'Smashing Magazine '.toUpperCase(),
+    // plots = 10,
+    plots = message.length,
+    turnangle = 0,
+    multiplier = 0,
+    increase = Math.PI * 2 / plots,
+    angle = -Math.PI,
+    x = 0,
+    y = 0,
+    plotcache = [];
+for (let i = 0; i < plots; i++ ){
+    let p = new Plot(stage);
+    p.content(message.substr(i, 1));
+    // p.setBackground('green');
+    p.setDimensions(40, 40);
+    plotcache.push(p);
+}
+
+function rotate() {
+    multiplier = 80 * Math.sin( angle );
+    for (let i = 0; i< plots; i++) {
+        x = multiplier * Math.cos(angle) + 200;
+        y = multiplier * Math.sin(angle) + 200;
+        // console.log('x='+(x-200)+', y='+(y-200));
+        // console.log(angle);
+        // atan2() 方法可返回从 x 轴到点 (x,y) 之间的角度
+        // console.log(Math.atan2(y-200, x-200));
+        // plotcache[i].rotate( Math.atan2(y-200, x-200) + 'rad' );
+        turnangle = Math.atan2( y - 200, x - 200 ) * 180 / Math.PI + 90 + 'deg';
+        plotcache[i].rotate( turnangle );
+        plotcache[i].position( x, y);
+        angle += increase;
+    }
+    angle += 0.06;
+    console.log(angle);
+}
+
+setInterval( rotate, 1000 / 30 );
+
+
+</script>
+</body>
+</html>

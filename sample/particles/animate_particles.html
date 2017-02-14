@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #stage {
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="stage"></canvas>
+    <script>
+        let radiant = 0,
+           particles = [],
+           particleCount = 1,
+           frame = 0,
+           w = window.innerWidth,
+           h = window.innerHeight,
+           c = {
+            x: window.innerWidth/2,
+            y: window.innerHeight/2
+           },
+           stage = document.querySelector('#stage'),
+           ctx = stage.getContext('2d'); 
+
+        stage.width = window.innerWidth;
+        stage.height = window.innerHeight;
+
+        function animate() {
+          requestAnimationFrame(animate);
+          update();
+        }
+        animate();
+        
+        class P {
+          constructor(){
+            this.x = c.x;
+            this.y = c.y;
+            this.vx = Math.cos(radiant);
+            this.vy = Math.sin(radiant);
+            this.color = 'hsl(rad, 80%, 50%)'
+                .replace('rad', (radiant/Math.PI)*180 | 0);
+          }
+          update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, 2,2);
+          }
+        }
+
+        function update() {
+          ctx.fillStyle = 'rgba(0,0,0, 0.04)';
+          ctx.fillRect(0,0,w,h);
+          radiant += .1;
+          radiant %= Math.PI * 2;
+          ++frame;
+          if(frame > particleCount) {
+            frame = 0;
+            particles.push(new P());
+          }
+          for(let i = 0; i < particles.length; ++i) {
+            let p = particles[i];
+            p.update();
+            if( p.x > w || p.x <0 || p.y > h || p.y < 0 ) {
+              particles.splice(i, 1);
+              --i;
+            }
+          }
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 0, 0, Math.PI*2);
+          ctx.fill();
+        }
+        for (var i = 0; i < 1; ++i){
+          update();
+        }
+    </script>
+</body>
+</html>
