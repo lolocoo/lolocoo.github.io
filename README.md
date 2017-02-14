@@ -1,0 +1,2 @@
+# lolocoo.github.io
+blog
