@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Style Test"
+title:  "2016 Reading List"
 date:   1970-01-01 08:00
 categories: jekyll
 permalink: /archivers/test
