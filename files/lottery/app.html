@@ -200,6 +200,20 @@
         document.addEventListener('DOMContentLoaded', () => {
             app.init();
         }, false);
+
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    docEl.style.fontSize = 16 *(clientWidth / 375) + 'px';
+                };
+            
+            recalc();
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+        })(document, window);
     </script>
     <style>
 
