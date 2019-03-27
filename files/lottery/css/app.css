@@ -1,0 +1,65 @@
+#app {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+.page {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: #ffffff;
+    transform: translateY(100vh);
+    transition: .3s all;
+}
+.page.visible {
+    transform: translateY(0);
+}
+.page-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lottery {
+    display: flex;
+    margin: 1rem;
+    padding: 2rem;
+    height: 18rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-image: url(../images/bg.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.lottery .item {
+    margin-bottom: .5rem;
+    border-radius: .3rem;
+    width: 5.4rem;
+    height: 5.4rem;
+    text-align: center;
+    background: #ffffff;
+}
+.lottery .item.selected {
+    background: yellow;
+}
+#lottery-form {
+    padding: .5rem;
+}
+#lottery-form #sendUserInfo {
+    margin-left: calc(var(--universal-margin) / 2);;
+    margin-right: calc(var(--universal-margin) / 2);;
+}
+.page-lottery {
+    background: #f02d2f;
+}
+#drawBtn {
+    background-image: url(../images/bg3.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.mask {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: rgba(0, 0, 0, .3);
+}
