@@ -54,12 +54,12 @@ let lottery = {
         }, this.speed);
     },
     initLotteryPage(data) {
-        // <div class="prize-level">${item['prize_item_name']}</div>
         let createItem = (index) => {
             let item = data[index];
             return `
             <div class="item prize-${index}">
                 <div class="prize-image"><img src="${originUrl + item['image']}" /></div>
+                <div class="prize-level">${item['prize_item_name']}</div>
                 <div class="prize-name">${item['prize_name']}</div>
             </div>
             `
