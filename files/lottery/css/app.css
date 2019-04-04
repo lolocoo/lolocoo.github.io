@@ -11,6 +11,7 @@
     background: #ffffff;
     transform: translateY(100vh);
     transition: .3s all;
+    overflow: auto;
 }
 .page.visible {
     transform: translateY(0);
@@ -30,17 +31,46 @@
     background-image: url(../images/bg.png);
     background-repeat: no-repeat;
     background-size: 100%;
+    position: relative;
+    top: 7rem;
 }
 .lottery .item {
+    display: flex;
     margin-bottom: .5rem;
     border-radius: .3rem;
     width: 5.4rem;
     height: 5.4rem;
     text-align: center;
-    background: #ffffff;
+    background: #ffeeed;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
 }
 .lottery .item.selected {
-    background: yellow;
+    background: #fef38e;
+}
+.lottery .prize-name {
+    margin-top: .5rem;
+    color: #431e00;
+}
+.lottery .prize-image {
+    width: 3rem;
+    height: 3rem;
+    overflow: hidden;
+    position: relative;
+    top: .5rem;
+}
+.lottery .prize-level {
+    display: none;
+}
+.lottery .prize-image img {
+    max-width: 100%;
+    height: auto;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 }
 #lottery-form {
     padding: .5rem;
@@ -50,7 +80,8 @@
     margin-right: calc(var(--universal-margin) / 2);;
 }
 .page-lottery {
-    background: #f02d2f;
+    background: #f02d2f url(../images/lottery-bg.png) no-repeat;
+    background-size: contain;
 }
 #drawBtn {
     background-image: url(../images/bg3.png);

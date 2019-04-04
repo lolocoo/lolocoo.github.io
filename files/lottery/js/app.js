@@ -4,6 +4,7 @@ const stringify = JSON.stringify;
 const ls = window.localStorage;
 const $body = qs('body');
 const $app = qs('#app');
+const originUrl = 'https://form.powski.cn';
 // service 
 let service = {
     index(id = 2) {
@@ -53,11 +54,13 @@ let lottery = {
         }, this.speed);
     },
     initLotteryPage(data) {
+        // <div class="prize-level">${item['prize_item_name']}</div>
         let createItem = (index) => {
+            let item = data[index];
             return `
             <div class="item prize-${index}">
-                <div class="prize-level">${data[index]['prize_item_name']}</div>
-                <div class="prize-name">${data[index]['prize_name']}</div>
+                <div class="prize-image"><img src="${originUrl + item['image']}" /></div>
+                <div class="prize-name">${item['prize_name']}</div>
             </div>
             `
         }
@@ -131,40 +134,41 @@ let app = {
         html.innerHTML = `
             <h3>${this.indexData.winText}</h3>
             <h3>${prize.prize_item_name}</h3>
+            <p><img src="${originUrl + prize.image}" /></p>
             <p>${prize.prize_name}</p>
             <p>${this.indexData.acceptDesc}</p>
             <p>谢谢您的参与</p>
         `;
         $app.appendChild(html);
-        setTimeout(() => this.switchPage('Ack'), 100);
+        setTimeout(() => this.switchPage('Ack'), 600);
     },
-    initIndexPage() {
+    initIndexPage(id) {
         let that = this;
-        service.index().then(res => {
+        service.index(id).then(res => {
             app.indexData = res;
             qs('#formTitle').innerHTML = res.title;
             qs('#formDescription').innerHTML = res.desc;
             app.switchPage('Index');
             qs('#sendUserInfo').addEventListener('touchend', () => {
-                if (this.validateForm()) {
-                    service.user({ mobile: qs('#mobile').value, name: qs('#username').value }).then(res => {
-                        console.log(res);
-                        that.prize = res.prize;
-                        lottery.win = app.prize.id - 1;
-                        app.switchPage('Lottery', lottery.init(app.indexData.prizes));
-                    });
-                }
+                if (!this.validateForm()) return false;
+                service.user({ id, mobile: qs('#mobile').value, name: qs('#username').value }).then(res => {
+                    console.log(res);
+                    that.prize = res.prize;
+                    // lottery.win = app.prize.id - 1;
+                    lottery.win = app.indexData.prizes.findIndex(item => item.id == app.prize.id);
+                    app.switchPage('Lottery', lottery.init(app.indexData.prizes));
+                });
             }, false);
         });
         
     },
-    init() {
-        this.initIndexPage();
+    init(id) {
+        this.initIndexPage(id);
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    app.init();
+    app.init(26);
 }, false);
 
 (function (doc, win) {
